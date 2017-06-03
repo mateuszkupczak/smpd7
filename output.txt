@@ -1,0 +1,79 @@
+> library("C50")
+> data <- matrix(c(276, 262, 196, 192, 206, 228, 188, 279, 206, 246, 100, 210, 212, 361, 166,
++                  130, 98, 75, 98, 98, 111, 98, 87, 98, 98, 56, 98, 98, 211, 64,
++                  17, 18, 28, 21, 24, 24, 20, 16, 24, 16, 20, 20, 18, 12, 19,
++                  3399, 2099, 899, 1399, 1799, 1199, 1699, 1999, 2199, 2099, 890, 1899, 1799, 3449, 1198), 15, 4)
+> labels <- c("1", "2", "3", "4")
+> result <- c(2, 3, 4, 4, 3, 4, 4, 3, 3, 4, 3, 3, 4, 2, 3)
+> test <- factor(result, labels)
+> colnames(data) <- c("Cooler_storage_volume", "Freezer_storage_volume", "Temp_keep_in_h_if_power_outage", "Price")
+> treeModel <- C5.0(x = data[,], y = test)
+> treeModel
+
+Call:
+C5.0.default(x = data[, ], y = test)
+
+Classification Tree
+Number of samples: 15 
+Number of predictors: 4 
+
+Tree size: 6 
+
+Non-standard options: attempt to group attributes
+
+> summary(treeModel)
+
+Call:
+C5.0.default(x = data[, ], y = test)
+
+
+C5.0 [Release 2.07 GPL Edition]  	Sat Jun 03 17:59:16 2017
+-------------------------------
+
+Class specified by attribute `outcome'
+
+Read 15 cases (5 attributes) from undefined.data
+
+Decision tree:
+
+Price > 2199: 2 (2)
+Price <= 2199:
+:...Freezer_storage_volume <= 64: 3 (2)
+    Freezer_storage_volume > 64:
+    :...Price <= 1699: 4 (4)
+        Price > 1699:
+        :...Temp_keep_in_h_if_power_outage > 19: 3 (3)
+            Temp_keep_in_h_if_power_outage <= 19:
+            :...Cooler_storage_volume <= 246: 4 (2)
+                Cooler_storage_volume > 246: 3 (2)
+
+
+Evaluation on training data (15 cases):
+
+	    Decision Tree   
+	  ----------------  
+	  Size      Errors  
+
+	     6    0( 0.0%)   <<
+
+
+	   (a)   (b)   (c)   (d)    <-classified as
+	  ----  ----  ----  ----
+	                            (a): class 1
+	           2                (b): class 2
+	                 7          (c): class 3
+	                       6    (d): class 4
+
+
+	Attribute usage:
+
+	100.00%	Price
+	 86.67%	Freezer_storage_volume
+	 46.67%	Temp_keep_in_h_if_power_outage
+	 26.67%	Cooler_storage_volume
+
+
+Time: 0.0 secs
+
+> plot(treeModel)
+> 
